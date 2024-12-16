@@ -3,25 +3,18 @@ Farah Hadhirah Jaafar 20516003 <br>
 <a href="https://github.com/kyeonne/DMS2024">GitHub depository</a>
 
 ## Table of Contents
-1. [Installation](#installation)
-2. [Usage](#usage)
-3. [Features](#features)
-4. [Contributing](#contributing)
-5. [License](#license)
-6. [Authors](#authors)
-7. [Acknowledgements](#acknowledgements)
-8. [Contact](#contact)
-9. [FAQ](#faq)
-10. [Roadmap](#roadmap)
-11. [Changelog](#changelog)
+1. [Installation and Compilation](#installation)
+2. [Features](#features)
+3. [Java Classes](#classes)
+4. [Unexpected Problems](#problems)
 
-## Installation and Compilation
+<h2 id="installation"> Installation and Compilation </h2>
 
 ### Prerequisites
 Method 1: Have Java (minimum JDK 19) and Maven installed on the system.
 Method 2: Have IntelliJ IDEA or any other compatible IDEs installed.
 
-### Installation Steps
+### Installation Steps 
 #### Method 1
 1. Download the zip file containing the code.
 2. Extract the zip file.
@@ -41,5 +34,24 @@ mvn clean javafx:run
 3. Navigate to Main
 4. Run the file.
 
+<hr>
+<h2 id="features"> Features </h2>
 
+### Implemented and Working Properly
+- Working kill counter
+- New level
+- Additional backgrounds
+- display icons
+### Implemented and Not Working Properly
+- Shielding mechanic: The appearance and removal of shields are not working as expected
+### Not Implemented
+- Menus such as start menus and pause menus
+- Game restart function
 
+<h2 id="classes"> Java Classes </h2>
+### New Classes
+- LevelThree: Added a new level to the game
+- KillCDisplay: New container that shows the kill count icon and incrementing number
+### Modified Classes
+- ActiveActorDestructible
+<h2 id="problems"> Unexpected Problems </h2>
