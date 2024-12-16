@@ -42,6 +42,7 @@ mvn clean javafx:run
 - New level
 - Additional backgrounds
 - display icons
+- Able to use 'W' and 'S' keys to control the plane as well
 ### Implemented and Not Working Properly
 - Shielding mechanic: The appearance and removal of shields are not working as expected
 ### Not Implemented
@@ -49,9 +50,23 @@ mvn clean javafx:run
 - Game restart function
 
 <h2 id="classes"> Java Classes </h2>
+
 ### New Classes
 - LevelThree: Added a new level to the game
 - KillCDisplay: New container that shows the kill count icon and incrementing number
+  
 ### Modified Classes
-- ActiveActorDestructible
+- ActiveActorDestructible: Solved boolean issues
+- Boss: Changed behavioural values and attempted to implement shields
+- LevelParent: Refactored the parts handling the key control logic and collision handling logic, added kill count
+- LevelTwo: Changed to flow to levelThree
+- LevelView: Included shields and killcount display
+- ShieldImage: Tried to make it work
+- GameOverImage: Changed size to fit better
+- WinImage: Changed size to fit better
+  
 <h2 id="problems"> Unexpected Problems </h2>
+
+- Initially had issues where the levels wouldn't transition or redirect properly
+- Had an issue whereby one of the catch cases would continuously trigger and cause my laptop to overheat
+- Hitboxes are linked to the uncropped background of the image, requiring manual image cropping
