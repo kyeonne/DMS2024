@@ -25,6 +25,7 @@ public class KillCDisplay {
         container = new HBox();
         container.setLayoutX(containerXPosition);
         container.setLayoutY(containerYPosition);
+        container.setSpacing(10);
     }
 
     private void initializeKillcount() {
@@ -33,7 +34,7 @@ public class KillCDisplay {
         killc.setPreserveRatio(true);
         container.getChildren().add(killc);
         numberOfKills = new Label("0");
-        numberOfKills.setStyle("-fx-font-size: 20px; -fx-text-fill: white;");
+        numberOfKills.setStyle("-fx-font-size: 40px; -fx-text-fill: white;");
         numberOfKills.setLayoutX(killc.getLayoutX() + killc.getFitWidth() + 10);
         numberOfKills.setLayoutY(killc.getLayoutY());
         container.getChildren().add(numberOfKills);

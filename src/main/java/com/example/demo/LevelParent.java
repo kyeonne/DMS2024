@@ -27,7 +27,7 @@ public abstract class LevelParent extends Observable {
 	private final List<ActiveActorDestructible> enemyUnits;
 	private final List<ActiveActorDestructible> userProjectiles;
 	private final List<ActiveActorDestructible> enemyProjectiles;
-	
+
 	private int currentNumberOfEnemies;
 	private final LevelView levelView;
 
@@ -63,7 +63,7 @@ public abstract class LevelParent extends Observable {
 		initializeBackground();
 		initializeFriendlyUnits();
 		levelView.showHeartDisplay();
-		levelView.showShields();
+		//levelView.showShields();
 		levelView.showKillCDisplay();
 		return scene;
 	}
@@ -104,19 +104,75 @@ public abstract class LevelParent extends Observable {
 		background.setFocusTraversable(true);
 		background.setFitHeight(screenHeight);
 		background.setFitWidth(screenWidth);
-		background.setOnKeyPressed(e -> {
-            KeyCode kc = e.getCode();
-            if (kc == KeyCode.UP) user.moveUp();
-            if (kc == KeyCode.DOWN) user.moveDown();
-            if (kc == KeyCode.SPACE) fireProjectile();
-        });
-		background.setOnKeyReleased(e -> {
-            KeyCode kc = e.getCode();
-            if (kc == KeyCode.UP || kc == KeyCode.DOWN) user.stop();
-        });
+
+		// Use dedicated methods for key press and release handling
+		background.setOnKeyPressed(this::handleKeyPressed);
+		background.setOnKeyReleased(this::handleKeyReleased);
+
 		root.getChildren().add(background);
 	}
 
+	private void handleKeyPressed(KeyEvent event) {
+		KeyCode keyCode = event.getCode();
+		switch (keyCode) {
+			case UP, W -> user.moveUp();
+			case DOWN, S -> user.moveDown();
+			case SPACE -> fireProjectile();
+			default -> {
+			}
+		}
+	}
+
+	private void handleKeyReleased(KeyEvent event) {
+		KeyCode keyCode = event.getCode();
+		if (keyCode == KeyCode.UP || keyCode == KeyCode.DOWN || keyCode == KeyCode.W || keyCode == KeyCode.S) {
+			user.stop();
+		}
+	}
+
+	private void handlePlaneCollisions() {
+		handleCollisionsBetween(friendlyUnits, enemyUnits);
+	}
+
+	private void handleUserProjectileCollisions() {
+		handleCollisionsBetween(userProjectiles, enemyUnits);
+	}
+
+	private void handleEnemyProjectileCollisions() {
+		handleCollisionsBetween(enemyProjectiles, friendlyUnits);
+	}
+
+	// New method for handling collisions between two groups of actors
+	private void handleCollisionsBetween(List<ActiveActorDestructible> group1, List<ActiveActorDestructible> group2) {
+		for (ActiveActorDestructible actor1 : group1) {
+			for (ActiveActorDestructible actor2 : group2) {
+				if (areActorsColliding(actor1, actor2)) {
+					applyCollisionEffects(actor1, actor2);
+				}
+			}
+		}
+	}
+
+	// Checks if two actors are colliding
+	private boolean areActorsColliding(ActiveActorDestructible actor1, ActiveActorDestructible actor2) {
+		return actor1.getBoundsInParent().intersects(actor2.getBoundsInParent());
+	}
+
+	// Applies effects  to both actors involved in a collision
+	private void applyCollisionEffects(ActiveActorDestructible actor1, ActiveActorDestructible actor2) {
+		actor1.takeDamage();
+		actor2.takeDamage();
+	}
+
+	private void handleEnemyPenetration() {
+		// Use streams for cleaner iteration and action
+		enemyUnits.stream()
+				.filter(this::enemyHasPenetratedDefenses)
+				.forEach(enemy -> {
+					user.takeDamage();
+					enemy.destroy();
+				});
+	}
 	private void fireProjectile() {
 		ActiveActorDestructible projectile = user.fireProjectile();
 		root.getChildren().add(projectile);
@@ -155,18 +211,6 @@ public abstract class LevelParent extends Observable {
 		actors.removeAll(destroyedActors);
 	}
 
-	private void handlePlaneCollisions() {
-		handleCollisions(friendlyUnits, enemyUnits);
-	}
-
-	private void handleUserProjectileCollisions() {
-		handleCollisions(userProjectiles, enemyUnits);
-	}
-
-	private void handleEnemyProjectileCollisions() {
-		handleCollisions(enemyProjectiles, friendlyUnits);
-	}
-
 	private void handleCollisions(List<ActiveActorDestructible> actors1,
 			List<ActiveActorDestructible> actors2) {
 		for (ActiveActorDestructible actor : actors2) {
@@ -179,14 +223,7 @@ public abstract class LevelParent extends Observable {
 		}
 	}
 
-	private void handleEnemyPenetration() {
-		for (ActiveActorDestructible enemy : enemyUnits) {
-			if (enemyHasPenetratedDefenses(enemy)) {
-				user.takeDamage();
-				enemy.destroy();
-			}
-		}
-	}
+
 
 	private void updateLevelView() {
 		levelView.removeHearts(user.getHealth());
