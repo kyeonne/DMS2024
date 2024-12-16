@@ -63,6 +63,8 @@ public abstract class LevelParent extends Observable {
 		initializeBackground();
 		initializeFriendlyUnits();
 		levelView.showHeartDisplay();
+		levelView.showShields();
+		levelView.showKillCDisplay();
 		return scene;
 	}
 
@@ -188,6 +190,7 @@ public abstract class LevelParent extends Observable {
 
 	private void updateLevelView() {
 		levelView.removeHearts(user.getHealth());
+		levelView.updateKillC(user.getNumberOfKills());
 	}
 
 	private void updateKillCount() {

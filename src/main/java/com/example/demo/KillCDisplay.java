@@ -33,11 +33,15 @@ public class KillCDisplay {
         killc.setPreserveRatio(true);
         container.getChildren().add(killc);
         numberOfKills = new Label("0");
-        numberOfKills.setStyle("-fx-font-size: 20px;");
+        numberOfKills.setStyle("-fx-font-size: 20px; -fx-text-fill: white;");
         numberOfKills.setLayoutX(killc.getLayoutX() + killc.getFitWidth() + 10);
         numberOfKills.setLayoutY(killc.getLayoutY());
         container.getChildren().add(numberOfKills);
 
+    }
+
+    public void updateKillC(int killCount) {
+        numberOfKills.setText(""+killCount); // Update the counter label
     }
 
     public HBox getContainer() {
